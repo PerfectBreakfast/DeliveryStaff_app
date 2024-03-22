@@ -3,7 +3,9 @@ import 'package:deliverystaff_app/pages/account/component/password_form.dart';
 import 'package:deliverystaff_app/pages/account/component/profile_header.dart';
 import 'package:deliverystaff_app/pages/account/component/profile_menu.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
+import '../../../common/preference_manager.dart';
 import '../../../network/api.dart';
 import '../../authentication/authentication_page.dart';
 import '../../persionalinformation/persional_information.dart';
@@ -19,10 +21,16 @@ class ProfileBody extends StatelessWidget {
       title: 'Đăng xuất',
       desc: 'Bạn có chắc chắn muốn đăng xuất?',
       btnCancelOnPress: () {},
-      btnOkOnPress: () {
+      btnOkOnPress: () async {
         storage.delete(key: 'token');
         storage.delete(key: 'userID');
         //storage.delete(key: 'parkingId');
+        SharedPreferences prefs = await PreferenceManager.getInstance();
+        prefs.remove('Name');
+        prefs.remove('Email');
+        prefs.remove('Roles');
+        prefs.remove('Image');
+        prefs.remove('CompanyName');
         Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const AuthenticationPage()),);
       },
     ).show();

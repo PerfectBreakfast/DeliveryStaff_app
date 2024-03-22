@@ -3,6 +3,7 @@ import '../../common/constant.dart';
 import '../account/account_profile.dart';
 import '../dailyorderhistory/dailyorder_history_list_page.dart';
 import '../qrpage/qr_page.dart';
+import '../shippingorder/shipping_order_page.dart';
 
 class HomePage extends StatefulWidget{
   const HomePage({Key? key}) : super(key: key);
@@ -15,22 +16,12 @@ class _HomePageState extends State<HomePage> {
   int currentTab = 0; // to keep track of active tab index
   final List<Widget> screens = [
     // const Dashboard(),
-    // const ParkingMapPage(),
-    // const BookingListPage(),
+     const ShippingOrderPage(),
+     const DailyOrderHistoryListPage(),
      const AccountProfile(),
   ];
   final PageStorageBucket bucket = PageStorageBucket();
-  Widget currentScreen = Card(
-    shape: RoundedRectangleBorder(
-      borderRadius: BorderRadius.circular(12)
-    ),
-    child: Text(
-      'dan choi hung',
-      style: TextStyle(
-        fontSize: 29
-      ),
-    ),
-  );
+  Widget currentScreen = ShippingOrderPage();
 
 
 
@@ -74,7 +65,7 @@ class _HomePageState extends State<HomePage> {
                     minWidth: 40,
                     onPressed: () {
                       setState(() {
-                        currentScreen = const Text('HAHAH 1111'); // if user taps on this dashboard tab will be active
+                        currentScreen = const ShippingOrderPage(); // if user taps on this dashboard tab will be active
                         currentTab = 0;
                       });
                     },
@@ -89,7 +80,7 @@ class _HomePageState extends State<HomePage> {
                     onPressed: () {
                       setState(() {
                         currentScreen =
-                        const Text('HAHAH 2222'); // if user taps on this dashboard tab will be active
+                        const DailyOrderHistoryListPage(); // if user taps on this dashboard tab will be active
                         currentTab = 1;
                       });
                     },
@@ -111,7 +102,7 @@ class _HomePageState extends State<HomePage> {
                     onPressed: () {
                       setState(() {
                         currentScreen =
-                        const DailyOrderHistoryListPage(); // if user taps on this dashboard tab will be active
+                        const Text('HAHAH 2222'); // if user taps on this dashboard tab will be active
                         currentTab = 2;
                       });
                     },

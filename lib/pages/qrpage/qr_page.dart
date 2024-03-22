@@ -10,6 +10,7 @@ import '../../common/constant.dart';
 import '../../common/text/medium.dart';
 import '../../common/text/semi_bold.dart';
 import '../../common/utils/ultil_widget.dart';
+import '../orderdetail/order_detail_page.dart';
 
 class QRViewExample extends StatefulWidget {
   const QRViewExample({Key? key}) : super(key: key);
@@ -162,14 +163,13 @@ class _QRViewExampleState extends State<QRViewExample> {
       setState(() {
         result = scanData;
         print('hahahahahahaha::::::: $result');
-        if(result!.code!.contains('pz')){
+        if(result!.code!.contains('pb')){
           controller.pauseCamera();
-          int bookingId = int.parse(result!.code!.split('-')[1]);
+          String orderId = result!.code!.split('#')[1];
           Navigator.pushReplacement(
             context,
             MaterialPageRoute(
-                //builder: (context) =>  BookingPage(bookingId: bookingId)),
-                builder: (context) =>  AccountProfile()),
+                builder: (context) =>  OrderDetailPage(orderId: orderId)),
           );
         }else{
           Utils(context).showErrorSnackBar('Mã QR không hợp lệ');

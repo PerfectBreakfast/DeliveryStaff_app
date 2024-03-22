@@ -1,7 +1,9 @@
 import 'package:deliverystaff_app/models/shipping_order_response.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../common/constant.dart';
+import '../../common/preference_manager.dart';
 import '../../network/api.dart';
 import 'component/activity_card.dart';
 import 'component/activity_loading.dart';
@@ -44,10 +46,22 @@ class _DailyOrderHistoryListPageState extends State<DailyOrderHistoryListPage> {
 // Inside your Widget class
   Future<void> _loadData({String? searchString}) async {
     //BookingsResponse? bookings = await fetchBookings(searchString: searchString);
-    List<ShippingOrderResponse?>? bookings = await getShippingOrderList();
-    setState(() {
-      listShippingOrder = bookings;
-    });
+    try{
+      List<ShippingOrderResponse?>? bookings = await getShippingOrderList();
+      setState(() {
+        listShippingOrder = bookings;
+      });
+    }
+    catch(e)
+    {
+      SharedPreferences prefs = await PreferenceManager.getInstance();
+      prefs.remove('Name');
+      prefs.remove('Email');
+      prefs.remove('Roles');
+      prefs.remove('Image');
+      prefs.remove('CompanyName');
+      print('Error fetching bookings: $e');
+    }
   }
 
   @override
@@ -134,17 +148,6 @@ class _DailyOrderHistoryListPageState extends State<DailyOrderHistoryListPage> {
                             return  Padding(
                               padding: const EdgeInsets.only(top: 16.0, right: 8, left: 8),
                               child: ActivityCard(
-                                  // bookingId:  listShippingOrder.[index].bookingSearchResult!.bookingId!,
-                                  // dateBook: listShippingOrder!.data![index].bookingSearchResult!.dateBook!,
-                                  // startTime: listShippingOrder!.data![index].bookingSearchResult!.startTime!,
-                                  // endTime: listShippingOrder!.data![index].bookingSearchResult!.endTime!,
-                                  // licensePlate: listShippingOrder!.data![index].vehicleInforSearchResult!.licensePlate!,
-                                  // address: listShippingOrder!.data![index].parkingSearchResult!.address!,
-                                  // parkingName: listShippingOrder!.data![index].parkingSearchResult!.name!,
-                                  // floorName: listShippingOrder!.data![index].parkingSlotSearchResult!.floorName!,
-                                  // slotName: listShippingOrder!.data![index].parkingSlotSearchResult!.name!,
-                                  // status: listShippingOrder!.data![index].bookingSearchResult!.status!
-
                                   bookingId:  listShippingOrder![index]!.id,
                                   dateBook: listShippingOrder![index]!.dailyOrder.bookingDate,
                                   startTime: DateTime.now(),

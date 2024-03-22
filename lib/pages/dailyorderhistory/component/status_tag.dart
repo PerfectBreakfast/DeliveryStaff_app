@@ -24,6 +24,7 @@ class StatusTag extends StatelessWidget {
               : status == "OverTime" ? "Quá giờ"
               : status == "Done" ? "Hoàn thành"
               : status == 'Chờ_lấy_hàng' ? 'chờ lấy hàng'
+              : status == 'Paid' ? 'Đã thanh toán'
               : "Hủy đơn",
           color: status == "Initial" ? AppColor.orange
               : status == "Success" ? AppColor.orange
@@ -32,6 +33,7 @@ class StatusTag extends StatelessWidget {
               : status == "Check_Out" ? AppColor.orange
               : status == "Done" ? Colors.green
               : status == 'Chờ_lấy_hàng' ? Colors.blueAccent
+              : status == 'Paid' ? Colors.green
               : Colors.red
       ),
     );

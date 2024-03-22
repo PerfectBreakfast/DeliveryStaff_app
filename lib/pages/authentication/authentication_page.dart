@@ -29,7 +29,6 @@ class _AuthenticationPageState extends State<AuthenticationPage> {
     AuthenticationPage.email = email;
 
     LoginResponse loginSuccess = await login(email, password, context);
-
     //if (loginSuccess.data!.token != null) {
     if (loginSuccess.accessToken != null) {
       Navigator.pushAndRemoveUntil(

@@ -7,6 +7,7 @@ import 'package:intl/intl.dart';
 import '../../../common/constant.dart';
 import '../../../common/text/regular.dart';
 import '../../../common/text/semi_bold.dart';
+import '../../dailyorderdetail/dailyorder_detail_page.dart';
 
 class ActivityCard extends StatefulWidget {
   final String bookingId;
@@ -38,14 +39,14 @@ class _ActivityCardState extends State<ActivityCard> {
           context,
           MaterialPageRoute(
               //builder: (context) =>  BookingPage(bookingId: widget.bookingId,)),
-              builder: (context) =>  AccountProfile()),
+              builder: (context) =>  DailyOrderDetailPage()),
         );
       },
       child: Stack(
         children: [
           Container(
             padding: const EdgeInsets.all(8),
-            height: 170,
+            height: 200,
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(10),
               color: Colors.white,

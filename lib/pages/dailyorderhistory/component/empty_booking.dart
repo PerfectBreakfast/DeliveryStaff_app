@@ -14,11 +14,11 @@ class EmptyBooking extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.center,
       mainAxisAlignment: MainAxisAlignment.center,
       children:  [
-        //Lottie.asset('assets/json/empty/629-empty-box.json', ),
+        Lottie.asset('assets/json/empty/629-empty-box.json', ),
         const SizedBox(height: 30,),
-        const SemiBoldText(text: 'Chưa có đơn đặt nào.', fontSize: 17, color: AppColor.forText),
+        const SemiBoldText(text: 'Chưa có đơn hoàn thành nào.', fontSize: 17, color: AppColor.forText),
         const SizedBox(height: 5,),
-        const RegularText(text: 'Tìm bãi xe nhanh chóng và tiện lợi', fontSize: 13, color: AppColor.fadeText),
+        const RegularText(text: 'Đặt món nhanh chóng và tiện lợi', fontSize: 13, color: AppColor.fadeText),
         const SizedBox(height: 50,),
       ],
     );

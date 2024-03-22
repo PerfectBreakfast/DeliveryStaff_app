@@ -1,6 +1,9 @@
 import 'dart:convert';
+import 'package:deliverystaff_app/models/order_detail_response.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import '../common/preference_manager.dart';
 import '../common/utils/ultil_widget.dart';
 import 'package:http/http.dart' as http;
 import '../models/base_response.dart';
@@ -94,12 +97,25 @@ Future<ProfileResponse?> getProfile() async {
           'Authorization': 'bearer $token',
         },
       );
-      if (response.statusCode >= 200 && response.statusCode <300) {
+      if (response.statusCode >= 200 && response.statusCode <300)
+      {
         final responseJson = jsonDecode(response.body);
         ProfileResponse profileResponse = ProfileResponse.fromJson(responseJson);
         //await storage.write(key: 'parkingId', value: profileResponse.data!.parkingId.toString());
         return profileResponse;
-      } else {
+      }
+      else if(response.statusCode == 401)
+      {
+        SharedPreferences prefs = await PreferenceManager.getInstance();
+        prefs.remove('Name');
+        prefs.remove('Email');
+        prefs.remove('Roles');
+        prefs.remove('Image');
+        prefs.remove('CompanyName');
+        return null;
+      }
+      else
+      {
         throw Exception('Fail to get profile info: Status code ${response.statusCode} Message ${response.body}');
       }
     }
@@ -129,7 +145,9 @@ Future<List<ShippingOrderResponse?>?> getShippingOrderList() async {
       if (response.statusCode >= 200 && response.statusCode <300) {
         final responseJson = jsonDecode(response.body);
         return List<ShippingOrderResponse>.from(responseJson.map((json) => ShippingOrderResponse.fromJson(json)));
-      } else {
+      }
+      else
+      {
         if(response.statusCode == 404){
           return null;
         }
@@ -139,5 +157,95 @@ Future<List<ShippingOrderResponse?>?> getShippingOrderList() async {
     return null;
   } catch (e) {
     throw Exception('Fail to get all booking: $e');
+  }
+}
+
+// Lấy order by Id
+Future<OrderDetailResponse> getOrderDetail(id) async {
+  try {
+    String? token = await storage.read(key: 'token');
+    debugPrint('-------- Get Order detail ---------');
+    debugPrint('User Token : $token');
+
+    final response = await http.get(
+      Uri.parse('$host/api/v1/orders/$id'),
+      headers: {
+        'accept': 'text/plain',
+        'Authorization': 'bearer $token',
+      },
+    );
+    if (response.statusCode == 200) {
+      final responseJson = jsonDecode(response.body);
+      return OrderDetailResponse.fromJson(responseJson);
+    } else {
+      throw Exception(
+          'Failed to fetch parking detail. Status code: ${response.statusCode} Message ${response.body}');
+    }
+  } catch (e) {
+    throw Exception('Fail to get parking detail: $e');
+  }
+}
+
+// Hoàn thành đơn
+Future<bool> completeOrder(String orderId, context) async {
+  try {
+    String? token = await storage.read(key: 'token');
+    debugPrint('-------- Get Order detail ---------');
+    final response = await http.patch(
+        Uri.parse('$host/api/v1/orders/$orderId/status-complete'),
+        headers: {
+          'accept': 'text/plain',
+          'Content-Type': 'application/json',
+          'Authorization': 'bearer $token',
+        },
+    );
+    if (response.statusCode >= 200 && response.statusCode <300) {
+      Utils(context).showSuccessSnackBar('Duyệt đơn thành công');
+      return true;
+    }else {
+      if(response.statusCode >= 400 && response.statusCode <500){
+        final responseJson = jsonDecode(response.body);
+        BaseResponse baseResponse =  BaseResponse.fromJson(responseJson);
+        Utils(context).showWarningSnackBar('${baseResponse.errors}');
+        debugPrint(' Status code ${response.statusCode} Thất bại');
+        return false;
+      }else{
+        Utils(context).showWarningSnackBar('Duyệt đơn thất bại');
+        throw Exception('Fail to Complete Order: Status code ${response.statusCode} Message ${response.body}');
+      }
+    }
+  } catch (e) {
+    Utils(context).showWarningSnackBar('Duyệt đơn thất bại');
+    throw Exception('Fail to cancel booking: $e');
+  }
+}
+
+// hamf de tést lát xóa
+// Check in cho customer
+Future<String> checkInBooking(String bookingId, context) async {
+  try {
+    Map<String, dynamic> requestBody = {
+      "bookingId": bookingId
+    };
+    debugPrint('Check in bookin với : bookingId $bookingId');
+
+    final response = await http.post(
+        Uri.parse('$host/api/customer-booking/check-in'),
+        headers: {
+          'accept': 'text/plain',
+          'Content-Type': 'application/json'
+        },
+        body: jsonEncode(requestBody)
+    );
+    if (response.statusCode >= 200 && response.statusCode <300) {
+      Utils(context).showSuccessSnackBar('Checkin Thành công');
+      return 'true';
+    }
+    else{
+      Utils(context).showErrorSnackBar('Checkin Thất bại');
+      throw Exception('Fail to checkin: Status code ${response.statusCode} Message ${response.body}');
+    }
+  } catch (e) {
+    throw Exception('Fail to checkin: $e');
   }
 }

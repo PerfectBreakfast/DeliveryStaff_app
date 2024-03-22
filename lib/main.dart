@@ -1,7 +1,8 @@
 import 'package:deliverystaff_app/pages/authentication/authentication_page.dart';
 import 'package:deliverystaff_app/pages/home/home_page.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+
+import 'network/api.dart';
 
 void main() {
   runApp(const MyApp());
@@ -15,7 +16,6 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  final storage = FlutterSecureStorage();
   @override
   void initState() {
     super.initState();
