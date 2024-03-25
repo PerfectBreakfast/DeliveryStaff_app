@@ -14,6 +14,7 @@ class AuthenticationPage extends StatefulWidget {
   @override
   State<AuthenticationPage> createState() => _AuthenticationPageState();
   static String email = "";
+
 }
 
 class _AuthenticationPageState extends State<AuthenticationPage> {

@@ -21,20 +21,22 @@ Future<LoginResponse> login(String email, String password, context) async {
     Utils(context).startLoading();
     Map<String, dynamic> requestBody = {
       'email': email,
-      'password': password
+      'password': password,
+      'roleId' : "08dc21b9-5b5d-4879-8ceb-3849923e1591"
     };
     debugPrint('---Request login---');
     debugPrint(jsonEncode(requestBody));
 
 
     var response = await http.post(
-        Uri.parse('$host/account/deliverystaff/login'),
+        Uri.parse('$host/api/account/management/login'),
         headers: {
           'Content-Type': 'application/json',
           'accept': 'text/plain'
         },
         body: jsonEncode(requestBody)
     );
+    //print(response);
     if (response.statusCode >= 200 && response.statusCode <300) {
       final responseJson = jsonDecode(response.body);
       LoginResponse loginResponse =  LoginResponse.fromJson(responseJson);
@@ -91,7 +93,7 @@ Future<ProfileResponse?> getProfile() async {
 
     if(userID != null && token != null){
       final response = await http.get(
-        Uri.parse('$host/account/current-user'),
+        Uri.parse('$host/api/account/current-user'),
         headers: {
           'Accept': 'application/json',
           'Authorization': 'bearer $token',
@@ -136,7 +138,7 @@ Future<List<ShippingOrderResponse?>?> getShippingOrderList() async {
 
     if(userID != null && token != null){
       final response = await http.get(
-        Uri.parse('$host/api/v1/shippingorders/deliverystaff'),
+        Uri.parse('$host/api/v1/shippingorders/delivery-staff'),
         headers: {
           'Accept': 'application/json',
           'Authorization': 'bearer $token',
@@ -218,34 +220,4 @@ Future<bool> completeOrder(String orderId, context) async {
     Utils(context).showWarningSnackBar('Duyệt đơn thất bại');
     throw Exception('Fail to cancel booking: $e');
   }
-}
-
-// hamf de tést lát xóa
-// Check in cho customer
-Future<String> checkInBooking(String bookingId, context) async {
-  try {
-    Map<String, dynamic> requestBody = {
-      "bookingId": bookingId
-    };
-    debugPrint('Check in bookin với : bookingId $bookingId');
-
-    final response = await http.post(
-        Uri.parse('$host/api/customer-booking/check-in'),
-        headers: {
-          'accept': 'text/plain',
-          'Content-Type': 'application/json'
-        },
-        body: jsonEncode(requestBody)
-    );
-    if (response.statusCode >= 200 && response.statusCode <300) {
-      Utils(context).showSuccessSnackBar('Checkin Thành công');
-      return 'true';
-    }
-    else{
-      Utils(context).showErrorSnackBar('Checkin Thất bại');
-      throw Exception('Fail to checkin: Status code ${response.statusCode} Message ${response.body}');
-    }
-  } catch (e) {
-    throw Exception('Fail to checkin: $e');
-  }
-}
+} 

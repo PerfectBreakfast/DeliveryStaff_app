@@ -90,21 +90,22 @@ class _ShippingOrderPageState extends State<ShippingOrderPage> {
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
+                        SemiBoldText(text: name ?? 'Đang tải...', fontSize: 25, color: Colors.black),
                         RegularText(
                           text: '${roles?.contains('DELIVERY STAFF') ?? false ? 'Nhân viên' : 'chưa xác định'} - ${companyName ?? 'Tên công ty không rõ'}',
-                          fontSize: 15,
+                          fontSize: 13,
                           color: AppColor.forText,
                         ),
-                        SemiBoldText(text: name ?? 'Đang tải...', fontSize: 25, color: Colors.black),
                       ],
                     ),
+                    const Spacer(), // This widget will expand to fill the remaining space
                     SizedBox(
-                      width: 50,
-                      height: 50,
+                      width: 70,
+                      height: 70,
                       child: CircleAvatar(
                         backgroundImage: NetworkImage(image ?? 'https://cdn.pixabay.com/photo/2016/03/28/12/35/cat-1285634_1280.png'),
                       ),
-                    )
+                    ),
                   ],
                 ),
                 const SizedBox(height: 32,),

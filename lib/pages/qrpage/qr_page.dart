@@ -162,7 +162,7 @@ class _QRViewExampleState extends State<QRViewExample> {
     controller.scannedDataStream.listen((scanData) {
       setState(() {
         result = scanData;
-        print('hahahahahahaha::::::: $result');
+        print('Correct :  $result');
         if(result!.code!.contains('pb')){
           controller.pauseCamera();
           String orderId = result!.code!.split('#')[1];
