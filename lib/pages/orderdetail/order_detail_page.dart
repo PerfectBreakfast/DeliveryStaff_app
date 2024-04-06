@@ -2,7 +2,6 @@ import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:deliverystaff_app/models/order_detail_response.dart';
 import 'package:deliverystaff_app/pages/orderdetail/component/order_info_popup.dart';
 import 'package:deliverystaff_app/pages/orderdetail/component/payment_method.dart';
-import 'package:deliverystaff_app/pages/shippingorder/shipping_order_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
@@ -14,14 +13,13 @@ import '../../common/text/semi_bold.dart';
 import '../../common/utils/loading_page.dart';
 import '../../common/utils/ultil_widget.dart';
 import '../../network/api.dart';
-import '../dailyorderhistory/component/status_tag.dart';
 import '../home/home_page.dart';
 import 'component/status_order_detail_tag.dart';
 
 class OrderDetailPage extends StatefulWidget {
   final String orderId;
 
-  const OrderDetailPage({Key? key, required this.orderId}) : super(key: key);
+  const OrderDetailPage({super.key, required this.orderId});
 
   @override
   State<OrderDetailPage> createState() => _OrderDetailPageState();

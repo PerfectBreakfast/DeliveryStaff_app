@@ -6,7 +6,7 @@ import '../../../common/text/regular.dart';
 import '../../../common/text/semi_bold.dart';
 
 class EmptyBooking extends StatelessWidget {
-  const EmptyBooking({Key? key}) : super(key: key);
+  const EmptyBooking({super.key});
 
   @override
   Widget build(BuildContext context) {

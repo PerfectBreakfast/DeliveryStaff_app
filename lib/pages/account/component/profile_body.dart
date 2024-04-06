@@ -11,7 +11,7 @@ import '../../authentication/authentication_page.dart';
 import '../../persionalinformation/persional_information.dart';
 
 class ProfileBody extends StatelessWidget {
-  const ProfileBody({Key? key}) : super(key: key);
+  const ProfileBody({super.key});
 
   void logout(BuildContext context)  {
     AwesomeDialog(

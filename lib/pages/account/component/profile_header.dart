@@ -8,7 +8,7 @@ import '../../../network/api.dart';
 import '../../authentication/authentication_page.dart';
 
 class ProfileHeader extends StatefulWidget {
-  const ProfileHeader({Key? key}) : super(key: key);
+  const ProfileHeader({super.key});
 
   @override
   _ProfileHeaderState createState() => _ProfileHeaderState();

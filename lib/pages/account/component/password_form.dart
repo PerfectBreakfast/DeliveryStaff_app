@@ -26,7 +26,7 @@ class _PasswordFormState extends State<PasswordForm> {
   }
 
 
-  void showSucess(BuildContext context)  {
+  void showSuccess(BuildContext context)  {
     AwesomeDialog(
       context: context,
       dialogType: DialogType.warning,

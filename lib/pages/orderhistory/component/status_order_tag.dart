@@ -5,7 +5,7 @@ import '../../../common/text/medium.dart';
 
 class StatusTag extends StatelessWidget {
   final String status;
-  const StatusTag({Key? key, required this.status}) : super(key: key);
+  const StatusTag({super.key, required this.status});
 
   @override
   Widget build(BuildContext context) {

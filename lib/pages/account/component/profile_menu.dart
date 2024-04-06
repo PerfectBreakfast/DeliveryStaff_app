@@ -7,7 +7,7 @@ class ProfileMenu extends StatelessWidget {
   final String textData;
   final Widget? page;
   final IconData iconData;
-  const ProfileMenu({Key? key, required this.textData, this.page, required this.iconData}) : super(key: key);
+  const ProfileMenu({super.key, required this.textData, this.page, required this.iconData});
 
   @override
   Widget build(BuildContext context) {

@@ -7,7 +7,9 @@ import '../common/preference_manager.dart';
 import '../common/utils/ultil_widget.dart';
 import 'package:http/http.dart' as http;
 import '../models/base_response.dart';
+import '../models/daily_order_detail_response.dart';
 import '../models/login_Response.dart';
+import '../models/order_history_response.dart';
 import '../models/profile_response.dart';
 import '../models/shipping_order_response.dart';
 
@@ -128,7 +130,7 @@ Future<ProfileResponse?> getProfile() async {
 }
 
 //Get booking list all
-Future<List<ShippingOrderResponse?>?> getShippingOrderList() async {
+Future<List<ShippingOrderResponse?>?> getShippingOrderList(DateTime time) async {
   try {
     String? userID = await storage.read(key: 'userID');
     String? token = await storage.read(key: 'token');
@@ -138,7 +140,7 @@ Future<List<ShippingOrderResponse?>?> getShippingOrderList() async {
 
     if(userID != null && token != null){
       final response = await http.get(
-        Uri.parse('$host/api/v1/shippingorders/delivery-staff'),
+        Uri.parse('$host/api/v1/shippingorders/delivery-staff?time=$time'),
         headers: {
           'Accept': 'application/json',
           'Authorization': 'bearer $token',
@@ -220,4 +222,94 @@ Future<bool> completeOrder(String orderId, context) async {
     Utils(context).showWarningSnackBar('Duyệt đơn thất bại');
     throw Exception('Fail to cancel booking: $e');
   }
-} 
+}
+
+// get list order history of DeliveryStaff
+Future<List<OrderHistoryResponse?>?> getOrderHistories(int pageNumber) async{
+  try{
+    String? userID = await storage.read(key: 'userID');
+    String? token = await storage.read(key: 'token');
+    debugPrint('-------- Get booking list ---------');
+    debugPrint('User ID : $userID');
+    debugPrint('User Token : $token');
+
+    if(userID != null && token != null){
+      final response = await http.get(
+        Uri.parse('$host/api/v1/orders/deliverystaff/history?pageNumber=$pageNumber'),
+        headers: {
+          //'Accept': 'application/json',
+          'Authorization': 'bearer $token',
+        },
+      );
+      if (response.statusCode >= 200 && response.statusCode <300) {
+        final responseJson = jsonDecode(response.body);
+        return List<OrderHistoryResponse>.from(responseJson.map((json) => OrderHistoryResponse.fromJson(json)));
+      }
+      else
+      {
+        if(response.statusCode == 404){
+          return null;
+        }
+        throw Exception('Fail to get all booking.: Status code ${response.statusCode} Message ${response.body}');
+      }
+    }
+    return null;
+  } catch(e){
+    throw Exception('Fail to cancel booking: $e');
+  }
+}
+
+// Lấy DailyOrder Detail by DailyOrderId
+Future<DailyOrderDetailResponse> getDailyOrderDetail(id) async {
+  try {
+    String? token = await storage.read(key: 'token');
+    debugPrint('-------- Get Order detail ---------');
+    debugPrint('User Token : $token');
+
+    final response = await http.get(
+      Uri.parse('$host/api/v1/foods/$id/dailyorderid/delivery'),
+      headers: {
+        'accept': 'text/plain',
+        'Authorization': 'bearer $token',
+      },
+    );
+    if (response.statusCode == 200) {
+      final responseJson = jsonDecode(response.body);
+      return DailyOrderDetailResponse.fromJson(responseJson);
+    } else {
+      throw Exception(
+          'Failed to fetch DailyOrder detail. Status code: ${response.statusCode} Message ${response.body}');
+    }
+  } catch (e) {
+    throw Exception('Fail to get dailyOrder detail: $e');
+  }
+}
+
+// xác nhận lấy đơn
+Future<bool> confirm(String id, context) async {
+  try {
+    String? token = await storage.read(key: 'token');
+    debugPrint('-------- Get Order detail ---------');
+    debugPrint('User Token : $token');
+
+    final response = await http.put(
+      Uri.parse('$host/api/v1/shippingorders/confirmation/$id'),
+      headers: {
+        'accept': 'text/plain',
+        'Authorization': 'bearer $token',
+      },
+    );
+    if (response.statusCode == 200) {
+      Utils(context).showSuccessSnackBar('Xác nhận thành công');
+      return true;
+    } else {
+      final responseJson = jsonDecode(response.body);
+      BaseResponse baseResponse =  BaseResponse.fromJson(responseJson);
+      Utils(context).showWarningSnackBar('${baseResponse.errors}');
+      debugPrint(' Status code ${response.statusCode} Thất bại');
+      return false;
+    }
+  } catch (e) {
+    throw Exception('Fail to get confirm: $e');
+  }
+}

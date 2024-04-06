@@ -1,7 +1,7 @@
 import 'dart:convert';
 
-ShippingOrderResponse ShippingOrderResponseFromJson(String str) => ShippingOrderResponse.fromJson(json.decode(str));
-String ShippingOrderResponseToJson(ShippingOrderResponse data) => json.encode(data.toJson());
+import 'package:flutter/material.dart';
+
 
 class ShippingOrderResponse {
   String id;
@@ -19,74 +19,88 @@ class ShippingOrderResponse {
     status: json["status"],
     dailyOrder: DailyOrder.fromJson(json["dailyOrder"]),
   );
-
-  Map<String, dynamic> toJson() => {
-    "id": id,
-    "status": status,
-    "dailyOrder": dailyOrder.toJson(),
-  };
 }
 
 class DailyOrder {
-  String id;
-  double totalPrice;
-  int orderQuantity;
-  String status;
-  DateTime bookingDate;
-  Company company;
+  final String id;
+  final DateTime bookingDate;
+  final String pickupTime;
+  final String handoverTime;
+  final String status;
+  final String meal;
+  final Company company;
+  final Partner partner;
 
   DailyOrder({
     required this.id,
-    required this.totalPrice,
-    required this.orderQuantity,
-    required this.status,
     required this.bookingDate,
+    required this.pickupTime,
+    required this.handoverTime,
+    required this.status,
+    required this.meal,
     required this.company,
+    required this.partner,
   });
 
   factory DailyOrder.fromJson(Map<String, dynamic> json) => DailyOrder(
-    id: json["id"],
-    totalPrice: json["totalPrice"].toDouble(),
-    orderQuantity: json["orderQuantity"],
-    status: json["status"],
-    bookingDate: DateTime.parse(json["bookingDate"]),
-    company: Company.fromJson(json["company"]),
+    id: json['id'],
+    bookingDate: DateTime.parse(json['bookingDate']),
+    pickupTime: json['pickupTime'],
+    handoverTime: json['handoverTime'],
+    status: json['status'],
+    meal: json['meal'],
+    company: Company.fromJson(json['company']),
+    partner: Partner.fromJson(json['partner']),
   );
-
-  Map<String, dynamic> toJson() => {
-    "id": id,
-    "totalPrice": totalPrice,
-    "orderQuantity": orderQuantity,
-    "status": status,
-    "bookingDate": bookingDate,
-    "company": company.toJson(),
-  };
 }
 
 class Company {
   String id;
   String name;
   String address;
-  String startWorkHour;
 
   Company({
     required this.id,
     required this.name,
     required this.address,
-    required this.startWorkHour,
   });
 
   factory Company.fromJson(Map<String, dynamic> json) => Company(
     id: json["id"],
     name: json["name"],
-    address: json["address"],
-    startWorkHour: json["startWorkHour"],
+    address: json["address"]
   );
+}
 
-  Map<String, dynamic> toJson() => {
-    "id": id,
-    "name": name,
-    "address": address,
-    "startWorkHour": startWorkHour,
-  };
+
+class Partner {
+  final String id;
+  final String name;
+  final String address;
+  final String phoneNumber;
+  final double commissionRate;
+  final double longitude;
+  final double latitude;
+
+  Partner({
+    required this.id,
+    required this.name,
+    required this.address,
+    required this.phoneNumber,
+    required this.commissionRate,
+    required this.longitude,
+    required this.latitude,
+  });
+
+  factory Partner.fromJson(Map<String, dynamic> json) {
+    return Partner(
+      id: json['id'],
+      name: json['name'],
+      address: json['address'],
+      phoneNumber: json['phoneNumber'],
+      commissionRate: json['commissionRate'].toDouble(),
+      longitude: json['longitude'].toDouble(),
+      latitude: json['latitude'].toDouble(),
+    );
+  }
 }

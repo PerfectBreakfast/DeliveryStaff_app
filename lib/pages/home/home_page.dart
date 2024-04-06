@@ -1,12 +1,13 @@
+import 'package:deliverystaff_app/pages/dashboard/dashboard_page.dart';
 import 'package:flutter/material.dart';
 import '../../common/constant.dart';
 import '../account/account_profile.dart';
-import '../dailyorderhistory/dailyorder_history_list_page.dart';
+import '../orderhistory/order_history_list_page.dart';
 import '../qrpage/qr_page.dart';
 import '../shippingorder/shipping_order_page.dart';
 
 class HomePage extends StatefulWidget{
-  const HomePage({Key? key}) : super(key: key);
+  const HomePage({super.key});
 
   @override
   State<HomePage> createState() => _HomePageState();
@@ -15,13 +16,13 @@ class HomePage extends StatefulWidget{
 class _HomePageState extends State<HomePage> {
   int currentTab = 0; // to keep track of active tab index
   final List<Widget> screens = [
-    // const Dashboard(),
+     const Dashboard(),
      const ShippingOrderPage(),
-     const DailyOrderHistoryListPage(),
+     const OrderHistoryListPage(),
      const AccountProfile(),
   ];
   final PageStorageBucket bucket = PageStorageBucket();
-  Widget currentScreen = ShippingOrderPage();
+  Widget currentScreen = const Dashboard();
 
 
 
@@ -65,7 +66,7 @@ class _HomePageState extends State<HomePage> {
                     minWidth: 40,
                     onPressed: () {
                       setState(() {
-                        currentScreen = const ShippingOrderPage(); // if user taps on this dashboard tab will be active
+                        currentScreen = const Dashboard(); // if user taps on this dashboard tab will be active
                         currentTab = 0;
                       });
                     },
@@ -80,7 +81,7 @@ class _HomePageState extends State<HomePage> {
                     onPressed: () {
                       setState(() {
                         currentScreen =
-                        const DailyOrderHistoryListPage(); // if user taps on this dashboard tab will be active
+                        const ShippingOrderPage(); // if user taps on this dashboard tab will be active
                         currentTab = 1;
                       });
                     },
@@ -102,7 +103,7 @@ class _HomePageState extends State<HomePage> {
                     onPressed: () {
                       setState(() {
                         currentScreen =
-                        const Text('HAHAH 2222'); // if user taps on this dashboard tab will be active
+                        const OrderHistoryListPage(); // if user taps on this dashboard tab will be active
                         currentTab = 2;
                       });
                     },

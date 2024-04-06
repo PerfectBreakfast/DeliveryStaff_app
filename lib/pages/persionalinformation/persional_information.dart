@@ -4,7 +4,7 @@ import '../../common/constant.dart';
 import '../../common/text/semi_bold.dart';
 
 class PersonalInformationPage extends StatefulWidget {
-  const PersonalInformationPage({Key? key}) : super(key: key);
+  const PersonalInformationPage({super.key});
 
   @override
   State<PersonalInformationPage> createState() =>

@@ -5,7 +5,7 @@ import '../../../common/text/semi_bold.dart';
 
 class PaymentMethod extends StatelessWidget {
   final String paymentMethod;
-  const PaymentMethod({Key? key, required this.paymentMethod}) : super(key: key);
+  const PaymentMethod({super.key, required this.paymentMethod});
 
   @override
   Widget build(BuildContext context) {
